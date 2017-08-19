@@ -1,0 +1,21 @@
+{
+    "name": "levko/php-shoutcast",
+    "description": "PHP Shoutcast/ICECast server",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Levko Kravets",
+            "email": "levko.ne@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">= 7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Shoutcast\\": "src"
+        }
+    }
+}

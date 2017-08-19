@@ -1,0 +1,103 @@
+{
+  "station": {
+    "name": "Demo",
+    "description": "Demo station",
+    "url": "http://example.com/",
+    "genre": "Rock",
+    "public": true,
+    "notice": [],
+
+    "metadata": true,
+    "metaint": 8192,
+    "format": "mp3",
+    "bitrate": 128,
+    "samplerate": 44100,
+    "channels": 2,
+
+    "headers": [
+      "X-Accel-Buffering: no",
+      "Content-Type: audio/mpeg",
+      "Content-Type: text/plain",
+      "Cache-Control: no-cache",
+      "Pragma: no-cache",
+      "Expires: Mon, 26 Jul 1997 05:00:00 GMT",
+      "Connection: Keep-Alive"
+    ]
+  },
+
+  "graph": {
+    "type": "player",
+    "backend": "ffmpeg",
+    "playlist": ["random", "plain"],
+    "metadata": ["backend", "filename", "defaults"],
+    "sink": "client"
+  },
+
+  "filters": {
+    "backend": {
+      "ffmpeg": {
+        "command": "ffmpeg -loglevel info -threads 1 -i {{filename}} -map a -ab {{bitrate}}k -ar {{samplerate}} -ac {{channels}} -f {{format}} -map_metadata -2 -y -"
+      },
+      "avconv": {
+        "command": "avconv -loglevel info -threads 1 -i {{filename}} -map a -ab {{bitrate}}k -ar {{samplerate}} -ac {{channels}} -f {{format}} -map_metadata -2 -y -"
+      },
+      "sox": {
+        "command": "sox -q --single-threaded {{filename}} -C {{bitrate}} -r {{samplerate}} -c {{channels}} --comment \"\" -t {{format}} -",
+        "metadata": "sox -i {{filename}}"
+      },
+      "external": {
+        "command": "cat {{filename}}"
+      }
+    },
+
+    "playlist": {
+      "plain": {
+        "items": [
+          {
+            "loader": "inline",
+            "enabled": false,
+            "items": [
+              "/media/spirit/DATA/Torrents/Blutengel/Blutengel - Discography/Albums/2015 - Omen/CD3 - Dark & Pure Vol. 2/3.04. Wir Sind Was Wir Sind (Acoustic Version).mp3",
+              "/media/spirit/DATA/Torrents/Blutengel/Blutengel - Discography/Albums/2009 - Soultaker/CD1 - Soultaker/1.05. Engelsblut (Fallen Angel Remix).mp3",
+              "/media/spirit/DATA/Torrents/Blutengel/Blutengel - Discography/Singles & EPs/2013 - Kinder Dieser Stadt/01. Kinder Dieser Stadt.mp3",
+              "/media/spirit/DATA/Torrents/Blutengel/Blutengel - Discography/Singles & EPs/2011 - Uber Den Horizont/05. Uber Den Horizont (Piano Version).mp3"
+            ]
+          },
+          {
+            "loader": "json",
+            "enabled": false,
+            "filename": "./playlist.json"
+          },
+          {
+            "loader": "m3u",
+            "enabled": true,
+            "filename": "/home/spirit/Desktop/Blutengel_Favorite.m3u"
+          },
+          {
+            "loader": "path",
+            "enabled": false,
+            "path": ["/media/spirit/DATA/Torrents/Blutengel/Blutengel - Discography/Albums/"],
+            "pattern": ["*.mp3"],
+            "recursive": true
+          }
+        ]
+      }
+    },
+
+    "sink": {
+      "client": {
+        "speed_limit": 150000
+      },
+      "file": {
+        "filename": "./output.mp3"
+      }
+    },
+
+    "metadata": {
+      "defaults": {
+        "artist": "Unknown artist",
+        "title": "Unknown track"
+      }
+    }
+  }
+}
